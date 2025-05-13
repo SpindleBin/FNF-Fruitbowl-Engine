@@ -1,5 +1,6 @@
 package objects;
 
+import engine.Paths;
 import engine.Styles.StyleData;
 import engine.Styles.LocalStyle;
 import engine.Styles.StyleHandler;
@@ -16,58 +17,55 @@ class ArrowStrums extends FlxTypedSpriteGroup<FlxSprite>
     private var pressedOffsets:Map<Int, Array<Float>> = new Map();
     private var confirmOffsets:Map<Int, Array<Float>> = new Map();
 
-    override public function new(x:Float, y:Float, styleHandler:LocalStyle)
+    override public function new(x:Float, y:Float)
     {
         super(x, y, 4);
-
-		var style:StyleData = null;
-        style = styleHandler.curStyle;
 
 		for (i in 0...4)
 		{
 			var babyArrow:FlxSprite = new FlxSprite();
 
-			babyArrow.frames = styleHandler.giveMeStrums();
+			babyArrow.frames = Paths.getSparrow('ui/STRUM_assets');
 
-			babyArrow.antialiasing = style.antialiasing;
-			babyArrow.setGraphicSize(Std.int(babyArrow.width * 0.7));
+			babyArrow.antialiasing = true;
+			babyArrow.setGraphicSize(Note.swagWidth);
 
-            for (anim in style.strumAnimations) {
-                if (anim != null && anim.direction == i) {
-                    var idleFPS:Int = 24;
-                    var pressedFPS:Int = 24;
-                    var confirmFPS:Int = 24;
+            babyArrow.x += Note.swagWidth * i;
 
-                    if (anim.idle.fps != null)
-                        idleFPS = anim.idle.fps;
-                    if (anim.pressed.fps != null)
-                        pressedFPS = anim.pressed.fps;
-                    if (anim.confirm.fps != null)
-                        confirmFPS = anim.confirm.fps;
+            switch (i) {
+                case 0:
+                    babyArrow.animation.addByPrefix('static', 'left strum', 24);
+                    babyArrow.animation.addByPrefix('pressed', 'left pressed', 24, false);
+                    babyArrow.animation.addByPrefix('confirm', 'left confirmed', 24, false);
 
-                    babyArrow.x += Note.swagWidth * i;
-                    babyArrow.animation.addByPrefix('static', anim.idle.prefix, idleFPS);
-                    babyArrow.animation.addByPrefix('pressed', anim.pressed.prefix, pressedFPS, false);
-                    babyArrow.animation.addByPrefix('confirm', anim.confirm.prefix, confirmFPS, false);
+                    idleOffsets.set(i, [0, 0]);
+                    pressedOffsets.set(i, [0, 0]);
+                    confirmOffsets.set(i, [-13, -13]);
+                case 1:
+                    babyArrow.animation.addByPrefix('static', 'down strum', 24);
+                    babyArrow.animation.addByPrefix('pressed', 'down pressed', 24, false);
+                    babyArrow.animation.addByPrefix('confirm', 'down confirmed', 24, false);
 
-                    if (anim.idle.offsets != null)
-                        idleOffsets.set(i, [anim.idle.offsets[0], anim.idle.offsets[1]]);
-                    else
-                        idleOffsets.set(i, [0, 0]);
+                    idleOffsets.set(i, [0, 0]);
+                    pressedOffsets.set(i, [0, 0]);
+                    confirmOffsets.set(i, [-14, -10]);
+                case 2:
+                    babyArrow.animation.addByPrefix('static', 'up strum', 24);
+                    babyArrow.animation.addByPrefix('pressed', 'up pressed', 24, false);
+                    babyArrow.animation.addByPrefix('confirm', 'up confirmed', 24, false);
 
-                    if (anim.pressed.offsets != null)
-                        pressedOffsets.set(i, [anim.pressed.offsets[0], anim.pressed.offsets[1]]);
-                    else
-                        pressedOffsets.set(i, [0, 0]);
-                    
-                    if (anim.confirm.offsets != null)
-                        confirmOffsets.set(i, [anim.confirm.offsets[0], anim.confirm.offsets[1]]);
-                    else
-                        confirmOffsets.set(i, [0, 0]);
+                    idleOffsets.set(i, [0, 0]);
+                    pressedOffsets.set(i, [0, 0]);
+                    confirmOffsets.set(i, [-13, -13]);
+                case 3:
+                    babyArrow.animation.addByPrefix('static', 'right strum', 24);
+                    babyArrow.animation.addByPrefix('pressed', 'right pressed', 24, false);
+                    babyArrow.animation.addByPrefix('confirm', 'right confirmed', 24, false);
 
-                    break;
-                }
-            }   
+                    idleOffsets.set(i, [0, 0]);
+                    pressedOffsets.set(i, [0, 0]);
+                    confirmOffsets.set(i, [-13, -13]);
+            }
 
 			babyArrow.updateHitbox();
 			babyArrow.scrollFactor.set();

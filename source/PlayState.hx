@@ -42,13 +42,17 @@ using StringTools;
 
 class PlayState extends MusicBeatState
 {
-	public static var curSong:SwagSong;
-	public static var isStoryMode:Bool = false;
-	public static var storyWeek:Int = 0;
-	public static var storyPlaylist:Array<String> = [];
-	public static var storyDifficulty:String = "normal";
-    public static var campaignScore:Int = 0;
+    public static var curSong:SwagSong;
     public static var chartingMode:Bool = false;
+
+    public static var isStoryMode:Bool = false;
+    public static var storyPlaylist:Array<String> = [];
+    public static var storyDifficulty:String = "normal";
+    public static var storyWeek:Int = 0;
+
+    public static var campaignScore:Int = 0;
+
+    public static var playbackRate:Float = 1;
 
     public var curStage:String = "";
 
@@ -68,8 +72,6 @@ class PlayState extends MusicBeatState
 
     private var notes:FlxTypedGroup<Note>;
     private var splashes:FlxTypedGroup<NoteSplash>;
-    
-    private var style:LocalStyle;
 
     private var bf:Boyfriend;
     private var dad:Character;
@@ -138,14 +140,10 @@ class PlayState extends MusicBeatState
         else
             camGame.focusOn(camFollow.getMidpoint());
 
-        camGame.follow(camFollow, LOCKON, 0.07);
+        camGame.follow(camFollow, LOCKON, 0.1);
 
         downscroll = Options.get("downscroll");
         ghost_tapping = Options.get("ghostTapping");
-
-        style = new LocalStyle(StyleHandler.styles.get("default"));
-        if (curSong.visualStyle != null)
-            style.setStyle(curSong.visualStyle);
 
         stageBack = new FlxGroup();
         add(stageBack);
@@ -205,10 +203,10 @@ class PlayState extends MusicBeatState
 
         camGame.zoom = defaultZoom;
 
-        opponentStrums = new ArrowStrums(Note.swagWidth / 2, Note.swagWidth / 4, style);
+        opponentStrums = new ArrowStrums(Note.swagWidth / 2, Note.swagWidth / 4);
         opponentStrums.camera = camHUD;
 
-        playerStrums = new ArrowStrums((FlxG.width - (Note.swagWidth * 4)) - Note.swagWidth / 2, Note.swagWidth / 4, style);
+        playerStrums = new ArrowStrums((FlxG.width - (Note.swagWidth * 4)) - Note.swagWidth / 2, Note.swagWidth / 4);
         playerStrums.camera = camHUD;
         
         if (downscroll)
@@ -225,7 +223,7 @@ class PlayState extends MusicBeatState
         splashes = new FlxTypedGroup();
         splashes.camera = camHUD;
 
-        var hbY:Float = FlxG.height * 0.9;
+        var hbY:Int = Math.floor(FlxG.height * 0.9);
 		if (downscroll)
 			hbY = 30;
 
@@ -233,7 +231,7 @@ class PlayState extends MusicBeatState
         popUpSprites.camera = camHUD;
         add(popUpSprites);
 
-        healthBarBG = new FlxSprite(0, hbY).loadGraphic(style.getImage('${style.curStyle.uiDirectoryPath}/healthBar'));
+        healthBarBG = new FlxSprite(0, hbY).loadGraphic(Paths.getImage('ui/hud/healthBar'));
 		healthBarBG.screenCenter(X);
         healthBarBG.camera = camHUD;
 		add(healthBarBG);
@@ -264,11 +262,6 @@ class PlayState extends MusicBeatState
         scoreTxt.camera = camHUD;
         add(scoreTxt);
 
-        var noteSplashForCache:NoteSplash = new NoteSplash(style);
-        noteSplashForCache.splash(0, 0, 0);
-        noteSplashForCache.alpha = 0.0001;
-        add(noteSplashForCache);
-
         add(opponentStrums);
         add(playerStrums);
         add(notes);
@@ -282,8 +275,6 @@ class PlayState extends MusicBeatState
         switch (curSong.song.toLowerCase()) {
             default:
                 startCountdown();
-            case 'lifecycle':
-                startSong();
         }
     }
 
@@ -311,7 +302,7 @@ class PlayState extends MusicBeatState
 				if (note.noteData > 3)
 					gottaHitNote = !section.mustHitSection;
 
-                var daNote:Note = new Note(note.strumTime, noteDirection, prevNote, false, style);
+                var daNote:Note = new Note(note.strumTime, noteDirection, prevNote, false);
                 daNote.visible = false;
                 daNote.active = false; 
 
@@ -324,7 +315,7 @@ class PlayState extends MusicBeatState
                 var prevSustain:Note = daNote;
                 for (sus in 0...Math.floor(note.sustainLength / Conductor.stepCrochet)) { // ඞ amogus
                     var sustain:Note = new Note(note.strumTime + (Conductor.stepCrochet * sus) + Conductor.stepCrochet, 
-                        noteDirection, prevSustain, true, style);
+                        noteDirection, prevSustain, true);
 
                     sustain.altAnimation = note.altAnimation;
                     sustain.mustPress = gottaHitNote;
@@ -362,7 +353,7 @@ class PlayState extends MusicBeatState
         var countdown:FlxSprite = new FlxSprite();
         countdown.camera = camHUD;
         countdown.visible = false;
-        countdown.loadGraphic(style.getImage('${style.curStyle.uiDirectoryPath}/ready'));
+        countdown.loadGraphic(Paths.getImage('ui/hud/ready'));
         countdown.screenCenter(XY);
         add(countdown);
 
@@ -382,11 +373,11 @@ class PlayState extends MusicBeatState
                     countdown.visible = true;
                 case 2:
                     FlxG.sound.play(Paths.getSound("intro1"), 0.7);
-                    countdown.loadGraphic(style.getImage('${style.curStyle.uiDirectoryPath}/set'));
+                    countdown.loadGraphic(Paths.getImage('ui/hud/set'));
                     countdown.screenCenter(XY);
                 case 3:
                     FlxG.sound.play(Paths.getSound("introGo"), 0.7);
-                    countdown.loadGraphic(style.getImage('${style.curStyle.uiDirectoryPath}/go'));
+                    countdown.loadGraphic(Paths.getImage('ui/hud/go'));
                     countdown.screenCenter(XY);
 
                     countdown.acceleration.y = 550;
@@ -414,6 +405,7 @@ class PlayState extends MusicBeatState
 
         songStarted = true;
         canPause = true;
+        inCountdown = false;
     }
 
     function endSong()
@@ -551,9 +543,9 @@ class PlayState extends MusicBeatState
                 }
 
                 if (downscroll)
-                    daNote.y = (strumLine.strums[daNote.noteData].y + (songTime - daNote.strumTime) * (0.45 * curSong.speed)) + daNote.yOffset;
+                    daNote.y = (strumLine.strums[daNote.noteData].y + (songTime - daNote.strumTime) * (0.45 * (curSong.speed * playbackRate))) + daNote.yOffset;
                 else
-                    daNote.y = (strumLine.strums[daNote.noteData].y - (songTime - daNote.strumTime) * (0.45 * curSong.speed)) + daNote.yOffset;
+                    daNote.y = (strumLine.strums[daNote.noteData].y - (songTime - daNote.strumTime) * (0.45 * (curSong.speed * playbackRate))) + daNote.yOffset;
 
                 daNote.x = strumLine.strums[daNote.noteData].x + daNote.xOffset;
 
@@ -726,12 +718,9 @@ class PlayState extends MusicBeatState
 			case 'sick':
 				++sicks;
 
-				if (style.curStyle.enableSplashes) {
-                    var noteSplash:NoteSplash = new NoteSplash(style);
-
-					noteSplash.splash(direction, playerStrums.strums[direction].x, playerStrums.strums[direction].y);
-					splashes.add(noteSplash);
-				}
+                var noteSplash:NoteSplash = new NoteSplash();
+                noteSplash.splash(direction, playerStrums.strums[direction].x, playerStrums.strums[direction].y);
+                splashes.add(noteSplash);
 			case 'good':
 				++goods;
 			case 'bads':
@@ -744,7 +733,7 @@ class PlayState extends MusicBeatState
 
         var items:Array<FlxSprite> = [];
         
-        var rating:FlxSprite = new FlxSprite().loadGraphic(style.getImage('${style.curStyle.ratingsDirectoryPath}/$daRating'));
+        var rating:FlxSprite = new FlxSprite().loadGraphic(Paths.getImage('ui/ratings/$daRating'));
         rating.setGraphicSize(rating.width * 0.5);
 		rating.updateHitbox();
         rating.screenCenter(X);
@@ -797,7 +786,6 @@ class PlayState extends MusicBeatState
         }
     }
 
-    // Literally just copy and pasted from the old PlayState...
     // If it ain't broken, don't fix it!
     private function keyShit():Void
 	{
@@ -1060,12 +1048,14 @@ class PlayState extends MusicBeatState
         /*if (!curSong.needsVoices)
             tracks.push(FlxG.sound.music);*/
 
+        FlxG.sound.music.pitch = playbackRate;
         FlxG.sound.music.play();
 
 		// Conductor.songPosition = FlxG.sound.music.time - Conductor.offset;
         
         for (track in tracks) {
             if (FlxG.sound.music.time < track.length) {
+                track.pitch = playbackRate;
                 track.time = FlxG.sound.music.time;
                 track.play();
             }

@@ -27,15 +27,8 @@ class Main extends Sprite
 
 		addChild(new FlxGame(0, 0, TitleState));
 
-		#if debug
-		FlxG.autoPause = true; // Causes instability with the editors if turned off
-		#else
-		FlxG.autoPause = false;
-		#end
-
 		engine.Options.init();
-		engine.Styles.StyleHandler.init();
-
+		
 		#if debug
 		addChild(new FPS(10, 3, 0xFFFFFF));
 		#end

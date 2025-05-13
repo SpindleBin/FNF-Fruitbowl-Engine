@@ -270,7 +270,7 @@ class TitleState extends MusicBeatState
 		switch (curBeat)
 		{
 			case 1:
-				createCoolText(["SpindlegBin"]);
+				createCoolText(["SpindleBin"]);
 			// credTextShit.visible = true;
 			case 3:
 				addMoreText('presents');

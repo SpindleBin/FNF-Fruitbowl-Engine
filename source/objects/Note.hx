@@ -1,5 +1,6 @@
 package objects;
 
+import engine.Paths;
 import flixel.tweens.FlxTween;
 import engine.Styles.StyleData;
 import engine.Styles.LocalStyle;
@@ -41,7 +42,7 @@ class Note extends FlxSprite
 	public var xOffset:Float = 0;
 	public var yOffset:Float = 0;
 
-	public function new(strumTime:Float, noteData:Int, ?prevNote:Note, ?sustainNote:Bool = false, styleHandler:LocalStyle)
+	public function new(strumTime:Float, noteData:Int, ?prevNote:Note, ?sustainNote:Bool = false)
 	{
 		super();
 
@@ -54,61 +55,41 @@ class Note extends FlxSprite
 		isSustainNote = sustainNote;
 
 		this.strumTime = strumTime;
-
 		this.noteData = noteData;
 
-		var style:StyleData = null;
-		frames = styleHandler.giveMeNotes();
-		style = styleHandler.curStyle;
+		// Sprites
+		frames = Paths.getSparrow('ui/NOTE_assets');
 
-		for (anim in style.noteAnimations){
-			if (anim != null) {
-				var idleFPS:Int = 24;
-				var holdFPS:Int = 24;
-				var holdendsFPS:Int = 24;
+		animation.addByPrefix('leftScroll', 'left0', 24);
+		animation.addByPrefix('leftHold', 'left hold0', 24);
+		animation.addByPrefix('leftHoldEnd', 'left hold end0', 24);
 
-				if (anim.idle.fps != null)
-					idleFPS = anim.idle.fps;
-				if (anim.holding.fps != null)
-					holdFPS = anim.holding.fps;
-				if (anim.holdends.fps != null)
-					holdendsFPS = anim.holdends.fps;
+		animation.addByPrefix('downScroll', 'down0', 24);
+		animation.addByPrefix('downHold', 'down hold0', 24);
+		animation.addByPrefix('downHoldEnd', 'down hold end0', 24);
 
-				switch (anim.direction) {
-					default:
-						animation.addByPrefix('purpleScroll', anim.idle.prefix, idleFPS);
-						animation.addByPrefix('purplehold', anim.holding.prefix, holdFPS);
-						animation.addByPrefix('purpleholdend', anim.holdends.prefix, holdendsFPS);
-					case 1:
-						animation.addByPrefix('blueScroll', anim.idle.prefix, idleFPS);
-						animation.addByPrefix('bluehold', anim.holding.prefix, holdFPS);
-						animation.addByPrefix('blueholdend', anim.holdends.prefix, holdendsFPS);
-					case 2:
-						animation.addByPrefix('greenScroll', anim.idle.prefix, idleFPS);
-						animation.addByPrefix('greenhold', anim.holding.prefix, holdFPS);
-						animation.addByPrefix('greenholdend', anim.holdends.prefix, holdendsFPS);
-					case 3:
-						animation.addByPrefix('redScroll', anim.idle.prefix, idleFPS);
-						animation.addByPrefix('redhold', anim.holding.prefix, holdFPS);
-						animation.addByPrefix('redholdend', anim.holdends.prefix, holdendsFPS);
-				}	
-			}
-		}
+		animation.addByPrefix('upScroll', 'up0', 24);
+		animation.addByPrefix('upHold', 'up hold0', 24);
+		animation.addByPrefix('upHoldEnd', 'up hold end0', 24);
 
-		setGraphicSize(Std.int(width * 0.7));
+		animation.addByPrefix('rightScroll', 'right0', 24);
+		animation.addByPrefix('rightHold', 'right hold0', 24);
+		animation.addByPrefix('rightHoldEnd', 'right hold end0', 24);
+
+		setGraphicSize(swagWidth);
 		updateHitbox();
-		antialiasing = style.antialiasing;
+		antialiasing = true;
 
 		switch (noteData)
 		{
 			case 0:
-				animation.play('purpleScroll');
+				animation.play('leftScroll');
 			case 1:
-				animation.play('blueScroll');
+				animation.play('downScroll');
 			case 2:
-				animation.play('greenScroll');
+				animation.play('upScroll');
 			case 3:
-				animation.play('redScroll');
+				animation.play('rightScroll');
 		}
 
 		// trace(prevNote);
@@ -120,14 +101,14 @@ class Note extends FlxSprite
 
 			switch (noteData)
 			{
-				case 2:
-					animation.play('greenholdend');
-				case 3:
-					animation.play('redholdend');
-				case 1:
-					animation.play('blueholdend');
 				case 0:
-					animation.play('purpleholdend');
+					animation.play('leftHoldEnd');
+				case 1:
+					animation.play('downHoldEnd');
+				case 2:
+					animation.play('upHoldEnd');
+				case 3:
+					animation.play('rightHoldEnd');
 			}
 
 			updateHitbox();
@@ -137,13 +118,13 @@ class Note extends FlxSprite
 				switch (prevNote.noteData)
 				{
 					case 0:
-						prevNote.animation.play('purplehold');
+						prevNote.animation.play('leftHold');
 					case 1:
-						prevNote.animation.play('bluehold');
+						prevNote.animation.play('downHold');
 					case 2:
-						prevNote.animation.play('greenhold');
+						prevNote.animation.play('upHold');
 					case 3:
-						prevNote.animation.play('redhold');
+						prevNote.animation.play('rightHold');
 				}
 
 				prevNote.scale.y *= Conductor.stepCrochet / 100 * 1.5 * PlayState.curSong.speed;

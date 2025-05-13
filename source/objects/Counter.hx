@@ -23,8 +23,7 @@ class Counter extends FlxTypedSpriteGroup<FlxSprite>
         this.maxCounters = maxCounters;
         this.size = size;
 
-        var style = StyleHandler.styles.get('default');
-        img = 'styles/' + style.root + '/' + style.numDirectoryPath + '/num';
+        img = 'ui/hud/nums/num';
 
         for (i in 0...maxCounters) {
             var counter:FlxSprite = new FlxSprite(0, 0);

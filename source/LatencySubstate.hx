@@ -38,7 +38,7 @@ class LatencySubstate extends MusicBeatSubstate
 
 		this.camera = funnyCam;
 
-		strumLine = new ArrowStrums(0, 5, StyleHandler.handler);
+		strumLine = new ArrowStrums(0, 32);
 
 		super();
 
@@ -66,7 +66,7 @@ class LatencySubstate extends MusicBeatSubstate
 
 		if (noteGrp.members.length == 0) {
 			for (i in 0...32) {
-				var note:Note = new Note(Conductor.crochet * i, FlxG.random.int(0, 3), StyleHandler.handler);
+				var note:Note = new Note(Conductor.crochet * i, FlxG.random.int(0, 3));
 				note.mustPress = true;
 				note.visible = true;
 				note.alpha = 0;

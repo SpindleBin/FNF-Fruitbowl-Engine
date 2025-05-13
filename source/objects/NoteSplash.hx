@@ -1,5 +1,6 @@
 package objects;
 
+import engine.Paths;
 import engine.Styles.StyleData;
 import engine.Styles.LocalStyle;
 import engine.Styles.StyleHandler;
@@ -7,39 +8,34 @@ import flixel.FlxG;
 import flixel.FlxSprite;
 
 class NoteSplash extends FlxSprite {
-    var properties:SplashProperties = null;
-    public var style:StyleData;
-
-    override public function new(styleHandler:LocalStyle, ?x:Float = 0, ?y:Float = 0)
+    override public function new(?x:Float = 0, ?y:Float = 0)
     {
         super(x, y);
 
-        style = styleHandler.curStyle;
+        frames = Paths.getSparrow('ui/noteSplashes');
+        alpha = 0.7;
 
-        properties = style.splashProperties;
-        frames = styleHandler.getSparrow(style.splashesImagePath);
-
-        for (i in 1...properties.impactAmount + 1)
+        for (i in 1...3)
         {
-            animation.addByPrefix("purpleSplash" + i, 'note impact $i purple', properties.fps, false);
-            animation.addByPrefix("blueSplash" + i, 'note impact $i blue', properties.fps, false);
-            animation.addByPrefix("greenSplash" + i, 'note impact $i green', properties.fps, false);
-            animation.addByPrefix("redSplash" + i, 'note impact $i red', properties.fps, false);
+            animation.addByPrefix("purpleSplash" + i, 'note impact $i purple', 24, false);
+            animation.addByPrefix("blueSplash" + i, 'note impact $i blue', 24, false);
+            animation.addByPrefix("greenSplash" + i, 'note impact $i green', 24, false);
+            animation.addByPrefix("redSplash" + i, 'note impact $i red', 24, false);
         }
 
-        antialiasing = style.antialiasing;
+        antialiasing = true;
     }
 
     override public function update(elapsed:Float){
         super.update(elapsed);
 
-        if (animation.curAnim.finished)
+        if (animation.curAnim == null || animation.curAnim != null && animation.curAnim.finished)
             this.kill();
     }
 
     public function splash(note:Int = 0, x:Float, y:Float)
     {
-        this.setPosition(x + properties.offsets[0], y + properties.offsets[1]);
+        this.setPosition(x - 80, y - 96);
 
         var color:String = null;
         switch (note) {
@@ -53,10 +49,9 @@ class NoteSplash extends FlxSprite {
                 color = 'red';
         }
 
-        var rand:Int = FlxG.random.int(1, properties.impactAmount);
+        var rand:Int = FlxG.random.int(1, 2);
         this.animation.play('${color}Splash${rand}');
-        
-        this.alpha = properties.alpha;
+        this.alpha = 0.7;
     }
 }
 

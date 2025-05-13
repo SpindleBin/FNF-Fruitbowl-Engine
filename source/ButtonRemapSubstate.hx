@@ -30,24 +30,16 @@ class ButtonRemapSubstate extends MusicBeatSubstate
 	var hitAKey:Alphabet;
 
 	public function new() {
-		realCam = new FlxCamera(Math.round(FlxG.width / 4), Math.round(FlxG.height / 8));
+		// What drugs were I on when I wrote this?? 😭
+		realCam = new FlxCamera(Math.round(FlxG.width / 4), Math.round(FlxG.height / 12));
 		realCam.bgColor =  FlxColor.TRANSPARENT;
 
 		FlxG.cameras.add(realCam, false);
-		
 		this.camera = realCam;
 
 		super();
 
-		/*var magenta:FlxSprite = new FlxSprite().loadGraphic('assets/images/menuDesat.png');
-		magenta.scale.set(0.5, 0.5);
-		magenta.updateHitbox();
-		magenta.setPosition();
-		magenta.color = 0xFFfd719b;
-		magenta.alpha = 0.7;
-		add(magenta);*/
-
-		notes = new ArrowStrums(Note.swagWidth / 1.2, (realCam.height / 2) - Note.swagWidth / 2, StyleHandler.handler);
+		notes = new ArrowStrums(Note.swagWidth / 1.2, (realCam.height / 2) - Note.swagWidth / 2);
 		add(notes);
 
 		for (i in 0...4) {
@@ -58,12 +50,10 @@ class ButtonRemapSubstate extends MusicBeatSubstate
 
 		add(letters);
 
-		hitAKey = new Alphabet(0, 0, "Press Any Key", true, false, -24);
-		hitAKey.scale.set(0.5, 0.5);
-		hitAKey.updateHitbox();
+		hitAKey = new Alphabet(0, 0, "Press Any Key", true, false);
 
-		hitAKey.x = (realCam.width / 2) - 360; // screenCenter() fucking HATES ME bro
-		hitAKey.y = (realCam.height - hitAKey.height) - 64;
+		hitAKey.x = (realCam.width / 2) - (hitAKey.width + 16);
+		hitAKey.y = (realCam.height - hitAKey.height) - 128;
 
 		hitAKey.visible = false;
 		add(hitAKey);
