@@ -1,6 +1,8 @@
 #  Fruitbowl Engine
 Fruitbowl Engine is a Friday Night Funkin' Engine created for modifications to be made with Lua.
 
+THIS SHITS A WORK IN PROGRESS!!!
+
 Please open source any modifications you make! Not doing so is not cool, especially since malware can always be passed around in hardcoded mods!
 
 ### How do I use the engine?
