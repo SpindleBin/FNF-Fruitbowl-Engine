@@ -15,9 +15,13 @@ Hell yeah you can!
 Discord Server coming soon!
 
 ## Q & A
+### Can you explain more about this?
+Fruitbowl Engine was created to hopefully be a more easy-to-use, as well as advanced, replacement to Psych Engine now that it has retired.
 ### Looks like a lot's already done, what's up with that?
 Fruitbowl Engine is made with an old FNF Engine I made called Papaya Engine. Papaya Engine was created for the KAVIFUNK Mod before I finished the Engine and scrapped it.
 KAVIFUNK will likely still be using Papaya Engine.
+### What are your plans for the Engine?
+I hope to get a beta version released with the essentials soon! That means custom characters, custom note types and visuals, and basic scripting!
 
 ## Credits
 Click on [this](credits.md) to view the Credits for the Engine.
