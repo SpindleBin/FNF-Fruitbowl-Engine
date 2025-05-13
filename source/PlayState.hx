@@ -252,16 +252,12 @@ class PlayState extends MusicBeatState
         bfIcon.y = healthBar.y - (bfIcon.width / 2);
         add(bfIcon);
 
-        bfIcon.visible = false;
-
         opponentIcon = new HealthIcon(curSong.player2);
         opponentIcon.setGraphicSize(80);
         opponentIcon.updateHitbox();
         opponentIcon.camera = camHUD;
         opponentIcon.y = healthBar.y - (opponentIcon.width / 2);
         add(opponentIcon);
-
-        opponentIcon.visible = false;
 
         scoreTxt = new FlxText(0, (hbY + healthBar.height) + 20, FlxG.width);
         scoreTxt.setFormat(null, 12, FlxColor.WHITE, CENTER, SHADOW, FlxColor.GRAY);
