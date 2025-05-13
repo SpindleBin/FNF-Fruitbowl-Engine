@@ -532,7 +532,7 @@ class PlayState extends MusicBeatState
                     startSong();
             }
 
-            // You'd expect looping through every note would cause lag but surprisngly not.
+            // You'd expect looping through every note would cause lag but surprisngly not. <- Dumbass!! Dumbass!! It does!!
             notes.forEachAlive((daNote:Note)->{
                 var strumLine:ArrowStrums = null;
                 switch(daNote.mustPress) {
