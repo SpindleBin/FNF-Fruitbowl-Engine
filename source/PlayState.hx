@@ -146,7 +146,7 @@ class PlayState extends MusicBeatState
         else
             camGame.focusOn(camFollow.getMidpoint());
 
-        camGame.follow(camFollow, LOCKON, 0.1);
+        camGame.follow(camFollow, LOCKON, 0.04);
 
         downscroll = Options.get("downscroll");
         ghost_tapping = Options.get("ghostTapping");
@@ -245,7 +245,7 @@ class PlayState extends MusicBeatState
         healthBarBG.camera = camHUD;
 		add(healthBarBG);
 
-		healthBar = new FlxBar(healthBarBG.x + 2, healthBarBG.y + 2, RIGHT_TO_LEFT, Std.int(healthBarBG.width - 4), Std.int(healthBarBG.height - 6), this,
+		healthBar = new FlxBar(healthBarBG.x + 2, healthBarBG.y + 3, RIGHT_TO_LEFT, Std.int(healthBarBG.width - 4), Std.int(healthBarBG.height - 6), this,
 			'health', 0, 2);
 		healthBar.scrollFactor.set();
 		healthBar.createFilledBar(FlxColor.RED, FlxColor.LIME);
@@ -253,14 +253,12 @@ class PlayState extends MusicBeatState
 		add(healthBar);
 
         bfIcon = new HealthIcon(curSong.player1, true);
-        bfIcon.setGraphicSize(80);
         bfIcon.updateHitbox();
         bfIcon.camera = camHUD;
         bfIcon.y = healthBar.y - (bfIcon.width / 2);
         add(bfIcon);
 
         opponentIcon = new HealthIcon(curSong.player2);
-        opponentIcon.setGraphicSize(80);
         opponentIcon.updateHitbox();
         opponentIcon.camera = camHUD;
         opponentIcon.y = healthBar.y - (opponentIcon.width / 2);
@@ -271,13 +269,15 @@ class PlayState extends MusicBeatState
         scoreTxt.camera = camHUD;
         add(scoreTxt);
 
-
+        // Strumline
         add(opponentStrums);
         add(playerStrums);
 
+        // Notes
         add(sustains);
         add(strums);
 
+        // Note Splashes
         add(splashes);
 
         generateSong();
@@ -663,8 +663,12 @@ class PlayState extends MusicBeatState
             botplay = !botplay;
         #end
 
-        // This part is dirty af because I'm lazy and I just want to get this done
-        var iconOffset:Int = 10;
+        
+        var iconScale:Float = FlxMath.lerp(bfIcon.scale.x, 1, 0.5);
+
+        bfIcon.scale.set(iconScale, iconScale);
+        opponentIcon.scale.set(iconScale, iconScale);
+
 		bfIcon.x = healthBar.x + (healthBar.width * (FlxMath.remapToRange(healthBar.percent, 0, 100, 100, 0) * 0.01) - iconOffset);
 		opponentIcon.x = healthBar.x + (healthBar.width * (FlxMath.remapToRange(healthBar.percent, 0, 100, 100, 0) * 0.01)) - (opponentIcon.width - iconOffset);
 
@@ -683,6 +687,8 @@ class PlayState extends MusicBeatState
             camHUD.zoom = FlxMath.lerp(camHUD.zoom, 1, 0.06);
         }
     }
+
+    final iconOffset:Int = 26;
 
     override function closeSubState() {
         if (paused)
@@ -1164,6 +1170,9 @@ class PlayState extends MusicBeatState
 
         if (Options.get("allowModCharts") && curSong.song.toLowerCase() == 'tutorial' && storyDifficulty == 'hard')
 			notes.visible = opponentStrums.visible = playerStrums.visible = !playerStrums.visible;
+
+        bfIcon.scale.set(1.25, 1.25);
+        opponentIcon.scale.set(1.25, 1.25);
     }
 
     function sectionHit() {
