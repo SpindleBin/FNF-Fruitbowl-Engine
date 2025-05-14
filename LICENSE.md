@@ -186,7 +186,7 @@
       same "printed page" as the copyright notice for easier
       identification within third-party archives.
 
-   Copyright 2024 SpinningBin
+   Copyright 2025 SpindleBin
    Upstream (FunkinCrew/Funkin): Copyright 2020-2024 The Funkin' Crew Inc.
 
    Licensed under the Apache License, Version 2.0 (the "License");
