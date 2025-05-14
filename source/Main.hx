@@ -28,6 +28,7 @@ class Main extends Sprite
 		addChild(new FlxGame(0, 0, TitleState));
 
 		engine.Options.init();
+		engine.mods.ModManager.init();
 		
 		#if debug
 		addChild(new FPS(10, 3, 0xFFFFFF));

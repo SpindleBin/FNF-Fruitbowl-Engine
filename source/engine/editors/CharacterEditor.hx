@@ -145,7 +145,7 @@ class CharacterEditor extends FlxState
         FlxG.cameras.add(uiCam, false);
         uiCam.bgColor = FlxColor.TRANSPARENT;
 
-        camCursor = new FlxSprite().loadGraphic("assets/images/cursor.png");
+        camCursor = new FlxSprite().loadGraphic("assets/images/ui/debug_cursor.png");
         camCursor.alpha = 0.5;
         add(camCursor);
 

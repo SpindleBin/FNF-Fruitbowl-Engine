@@ -59,40 +59,7 @@ class Options
 
     public static function init()
     {
-        // FlxG.save.bind('papaya', 'spunblue');
-        
-        /*var savedOptions:Array<OptionsData> = FlxG.save.data.options;
-
-        options = defaultOptions;
-        if (savedOptions != null) {
-            var safe:Bool = true;
-
-            for (i in 0...options.length) {
-                if (savedOptions[i] == null) {
-                    safe = false;
-                    break;
-                }
-                else if (savedOptions[i].name != options[i].name) {
-                    safe = false;
-                    break;
-                }
-            }
-
-            if (safe)
-                options = savedOptions;
-            else {
-                trace('Saved Options are invalid.');
-                FlxG.save.data.options = null;
-            }
-        }*/
-
-        /*if (get('safe') == null || get('safe') == false)
-        {
-            for (option in defaultOptions)
-                set(option.name, option.toggle);
-
-            set('safe', true);
-        }*/
+        FlxG.save.bind('spindlebin', 'fruitbowl');
 
         for (option in defaultOptions) {
             if (get(option.name) == null)

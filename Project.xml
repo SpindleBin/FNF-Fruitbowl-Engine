@@ -2,7 +2,7 @@
 <project>
 	<!-- _________________________ Application Settings _________________________ -->
 
-	<app title="Friday Night Funkin' Fruitbowl Engine" file="Funkin" packageName="com.SpindleBin.fruitbowl-fnf" main="Main" version="1.0.0" company="SpindleBin" />
+	<app title="Friday Night Funkin' Fruitbowl Engine" file="Funkin" packageName="com.SpindleBin.fruitbowl-fnf" main="Main" version="0.1.0" company="SpindleBin" />
 
 	<!--The flixel preloader is not accurate in Chrome. You can use it regularly if you embed the swf into a html file
 		or you can set the actual size of your file manually at "FlxPreloaderBase-onUpdate-bytesTotal"-->
@@ -36,24 +36,26 @@
 	<set name="BUILD_DIR" value="export/32bit" if="32bit" />
 
 	<classpath name="source"/>
+
+	<library name='default' preload='false'/>
 	
 	<assets path="assets/preload" rename='assets' preload='true'/>
-	<!--These are preloaded as well, I just can't put it in the preload directory without it copying the mp3 files-->
-	<assets path="assets/sounds" preload='true' exclude="*.ogg" if="web"/>
-	<assets path="assets/sounds" preload='true' exclude="*.mp3" unless="web"/>
+	<assets path="assets/sounds" exclude="*.ogg" if="web" preload='true'/>
+	<assets path="assets/sounds" exclude="*.mp3" unless="web" preload='true'/>
 
-	<assets path="assets/images" preload='false'/>
-	<assets path="assets/music" preload='false' exclude="*.ogg" if="web"/>
-	<assets path="assets/music" preload='false' exclude="*.mp3" unless="web"/>
-	<assets path="assets/songs" preload='false' exclude="*.ogg" if="web"/>
-	<assets path="assets/songs" preload='false' exclude="*.mp3" unless="web"/>
+	<assets path="assets/images"/>
+	<assets path="assets/music" exclude="*.ogg" if="web"/>
+	<assets path="assets/music" exclude="*.mp3" unless="web"/>
+	<assets path="assets/songs" exclude="*.ogg" if="web"/>
+	<assets path="assets/songs" exclude="*.mp3" unless="web"/>
 
 	<assets path="assets/fonts" preload="true" embed='true'/>
 
-	<template path="LICENSE.md" if="desktop"/>
+	<assets path="template/mods" rename="mods" type='template'/>
+	<template path='LICENCE.md' rename='LICENSE.txt'/>
 	<!-- _______________________________ Libraries ______________________________ -->
 
-	<haxelib name="flixel" /> <!-- I am using the developer branch! `haxelib git flixel https://github.com/HaxeFlixel/flixel` -->
+	<haxelib name="flixel" />
 	<haxedev set='webgl' />
 
 	<!--In case you want to use the addons package-->

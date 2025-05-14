@@ -1,0 +1,1 @@
+Remove "inf.ignore" from your mod! It will hide your mod from the Engine!

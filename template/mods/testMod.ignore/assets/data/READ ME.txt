@@ -1,0 +1,4 @@
+Put your data here!
+
+All assets in this folder will be registered upon the loading of your mod.
+Assets using the same file name will override default assets.

@@ -1,5 +1,6 @@
 package engine;
 
+import openfl.Assets;
 import flixel.graphics.frames.FlxAtlasFrames;
 
 class Paths
